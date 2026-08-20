@@ -31,6 +31,8 @@ const historyOpen = ref(false);
 const entropyInfoOpen = ref(false);
 const charsetInfoOpen = ref(false);
 const symbolSettingsOpen = ref(false);
+const aboutOpen = ref(false);
+const isDesktopApp = Boolean(window.passwordGeneratorApi);
 const FOCUSABLE_SELECTOR = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"]), [contenteditable="true"]';
 
 function getFocusableElements() {
@@ -257,6 +259,7 @@ onBeforeUnmount(() => {
         @generate="buildPassword()"
         @copy="copyPassword"
         @toggle-history="historyOpen = !historyOpen"
+        @toggle-about="aboutOpen = !aboutOpen"
       />
 
       <OptionsCard
@@ -285,6 +288,27 @@ onBeforeUnmount(() => {
         @close="historyOpen = false"
         @copy="copyHistoryValue"
       />
+
+      <section v-if="aboutOpen" class="info-overlay" @click.self="aboutOpen = false">
+        <div class="info-modal version-modal">
+          <div class="info-modal-header">
+            <span>About This Version</span>
+            <button class="info-modal-close" type="button" aria-label="Close version information" @click="aboutOpen = false">
+              <i class="bi bi-x-lg"></i>
+            </button>
+          </div>
+          <div class="info-panel version-info">
+            <p><strong>{{ isDesktopApp ? 'Desktop app' : 'Web app' }}</strong></p>
+            <p>The password generator, options, defaults, entropy calculation, secure randomness, history, symbol settings, and clipboard behavior are the same in both versions.</p>
+            <ul>
+              <li>The desktop edition includes a native window, startup screen, installers, and operating-system packaging.</li>
+              <li>The web edition runs in a browser, follows browser clipboard permissions, and adapts to smaller screens.</li>
+              <li>Fonts can render slightly differently depending on the browser and operating system.</li>
+              <li>Password history is temporary and resets when the app or page is restarted.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
     </main>
   </div>
 </template>

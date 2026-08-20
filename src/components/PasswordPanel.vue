@@ -20,7 +20,7 @@ defineProps({
   }
 });
 
-defineEmits(['generate', 'copy', 'toggle-history']);
+defineEmits(['generate', 'copy', 'toggle-history', 'toggle-about']);
 </script>
 
 <template>
@@ -32,6 +32,9 @@ defineEmits(['generate', 'copy', 'toggle-history']);
           <h1>Password Generator</h1>
         </div>
         <div class="hero-toolbar">
+          <button class="toolbar-button" type="button" aria-label="About desktop and web versions" @click="$emit('toggle-about')">
+            <i class="bi bi-info-circle"></i>
+          </button>
           <button class="toolbar-button" type="button" aria-label="Password history" @click="$emit('toggle-history')">
             <i class="bi bi-clock-history"></i>
             <span class="toolbar-count">{{ historyCount }}</span>

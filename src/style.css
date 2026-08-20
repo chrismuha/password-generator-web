@@ -457,6 +457,29 @@ button {
   margin-bottom: 0;
 }
 
+.version-modal {
+  width: min(560px, 100%);
+}
+
+.version-info p {
+  line-height: 1.5;
+}
+
+.version-info ul {
+  margin: 10px 0 0;
+  padding-left: 20px;
+  color: #c5c5c7;
+}
+
+.version-info li {
+  margin-bottom: 8px;
+  line-height: 1.45;
+}
+
+.version-info li:last-child {
+  margin-bottom: 0;
+}
+
 .history-overlay {
   position: fixed;
   inset: 0;
