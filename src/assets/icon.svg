@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <defs>
+    <filter id="lockShadow" x="180" y="100" width="664" height="760" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="44" stdDeviation="38" flood-color="#ff3b30" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <rect width="1024" height="1024" rx="220" fill="#111111"/>
+
+  <g filter="url(#lockShadow)">
+    <path d="M337 442V312C337 198 405 132 512 132s175 66 175 180v130" fill="none" stroke="#ededee" stroke-width="86" stroke-linecap="round"/>
+    <rect x="268" y="416" width="488" height="380" rx="118" fill="#ff3b30"/>
+    <rect x="474" y="558" width="76" height="146" rx="38" fill="#111111"/>
+  </g>
+</svg>
