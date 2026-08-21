@@ -610,8 +610,29 @@ button {
 }
 
 @media (max-width: 900px) {
+  html,
+  body,
+  #app {
+    height: auto;
+  }
+
+  body {
+    min-height: 100dvh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .app-shell {
+    height: auto;
+    min-height: 100dvh;
+    overflow: visible;
+  }
+
   .app-frame {
-    padding: 10px;
+    flex: 0 0 auto;
+    min-height: 100dvh;
+    padding: 10px 10px calc(10px + env(safe-area-inset-bottom));
+    overflow: visible;
   }
 
   .hero-heading h1 {
