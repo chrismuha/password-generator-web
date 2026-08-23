@@ -210,7 +210,7 @@ function createWindow() {
   });
 
   loadRenderer(mainWindow, {
-    defaultCloudUrl: 'http://localhost:5188',
+    defaultCloudUrl: 'http://localhost:5187',
     localFile: path.join(__dirname, '../dist/index.html'),
   });
 
