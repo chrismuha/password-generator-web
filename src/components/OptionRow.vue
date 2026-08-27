@@ -15,15 +15,30 @@ defineProps({
   checked: {
     type: Boolean,
     default: false
+  },
+  infoLabel: {
+    type: String,
+    default: ''
   }
 });
 
-defineEmits(['toggle', 'decrement', 'increment', 'click']);
+defineEmits(['toggle', 'decrement', 'increment', 'click', 'info-click']);
 </script>
 
 <template>
   <div class="option-row" @click="$emit('click')">
-    <span class="option-label">{{ label }}</span>
+    <span class="option-label-row">
+      <span class="option-label">{{ label }}</span>
+      <button
+        v-if="infoLabel"
+        class="option-info-button"
+        type="button"
+        :aria-label="infoLabel"
+        @click.stop="$emit('info-click')"
+      >
+        <i class="bi bi-info-circle"></i>
+      </button>
+    </span>
 
     <div v-if="kind === 'stepper'" class="stepper" @click.stop>
       <button type="button" class="stepper-button" aria-label="Decrease" @click="$emit('decrement')">−</button>

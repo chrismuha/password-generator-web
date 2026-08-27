@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import OptionRow from './OptionRow.vue';
 import SymbolSettingsModal from './SymbolSettingsModal.vue';
 
@@ -62,6 +62,7 @@ const separatorLabel = computed(() => {
   return current?.label || 'Dot';
 });
 const enabledSymbolCount = computed(() => `${props.state.enabledSymbols.length} enabled`);
+const groupsInfoOpen = ref(false);
 
 function patchState(patch) {
   emit('update:state', { ...props.state, ...patch });
@@ -89,8 +90,10 @@ function cycleSeparator() {
     <div class="list-card">
       <OptionRow
         label="Groups"
+        info-label="What are password groups?"
         kind="stepper"
         :value="`${state.groups} groups`"
+        @info-click="groupsInfoOpen = true"
         @decrement="$emit('update:groups', state.groups - 1)"
         @increment="$emit('update:groups', state.groups + 1)"
       />
@@ -142,6 +145,22 @@ function cycleSeparator() {
         @increment="$emit('update:chars-per-group', state.charsPerGroup + 1)"
       />
     </div>
+
+    <section v-if="groupsInfoOpen" class="info-overlay" @click.self="groupsInfoOpen = false">
+      <div class="info-modal">
+        <div class="info-modal-header">
+          <span>Groups</span>
+          <button class="info-modal-close" type="button" aria-label="Close groups help" @click="groupsInfoOpen = false">
+            <i class="bi bi-x-lg"></i>
+          </button>
+        </div>
+        <div class="info-panel">
+          <p><strong>Groups</strong> split your password into equal sections, which can make a long password easier to read or type.</p>
+          <p>The total number of password characters is <strong>groups × characters per group</strong>. For example, 4 groups of 4 characters creates 16 characters.</p>
+          <p>Your selected separator appears between groups. Choosing <strong>None</strong> keeps the same total characters without visible breaks.</p>
+        </div>
+      </div>
+    </section>
 
     <div class="metrics-card">
       <div>

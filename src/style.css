@@ -221,6 +221,25 @@ button {
   font-size: 0.9rem;
 }
 
+.option-label-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.option-info-button {
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: #2f2f31;
+  color: #d8d8da;
+  cursor: pointer;
+  padding: 0;
+  -webkit-app-region: no-drag;
+}
+
 .toggle {
   width: 54px;
   height: 30px;
