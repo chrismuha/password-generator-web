@@ -702,6 +702,10 @@ button {
     -webkit-overflow-scrolling: touch;
   }
 
+  .window-chrome {
+    display: none;
+  }
+
   .hero-heading h1 {
     font-size: 1.7rem;
   }
