@@ -149,6 +149,8 @@ button {
 
 .result-value {
   min-height: 72px;
+  display: flex;
+  align-items: center;
   padding: 14px 16px 10px;
   color: #ededee;
   font-size: clamp(1.2rem, 2.1vw, 1.8rem);
@@ -159,8 +161,49 @@ button {
   cursor: text;
 }
 
-.result-meta {
+.result-value.align-left {
+  justify-content: flex-start;
+  text-align: left;
+}
+
+.result-value.align-center {
+  justify-content: center;
+  text-align: center;
+}
+
+.result-details {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
   padding: 0 16px 8px;
+}
+
+.alignment-toggle {
+  display: flex;
+  padding: 2px;
+  border-radius: 9px;
+  background: #49494b;
+}
+
+.alignment-toggle button {
+  width: 25px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  border-radius: 7px;
+  background: transparent;
+  color: #aaa;
+  cursor: pointer;
+}
+
+.alignment-toggle button[aria-pressed="true"] {
+  background: #68686b;
+  color: #fff;
+}
+
+.result-meta {
+  padding: 0;
   color: #d6d6d8;
   text-align: right;
   font-size: 0.82rem;
@@ -632,26 +675,31 @@ button {
   html,
   body,
   #app {
-    height: auto;
+    height: 100%;
+    min-height: 100%;
   }
 
+  html,
   body {
-    min-height: 100dvh;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
+    overflow: hidden;
+    overscroll-behavior: none;
   }
 
   .app-shell {
-    height: auto;
+    height: 100vh;
+    height: 100dvh;
     min-height: 100dvh;
-    overflow: visible;
+    overflow: hidden;
+    overscroll-behavior: none;
   }
 
   .app-frame {
-    flex: 0 0 auto;
-    min-height: 100dvh;
+    flex: 1 1 auto;
+    min-height: 0;
     padding: 10px 10px calc(10px + env(safe-area-inset-bottom));
-    overflow: visible;
+    overflow-y: auto;
+    overscroll-behavior: none;
+    -webkit-overflow-scrolling: touch;
   }
 
   .hero-heading h1 {
@@ -660,7 +708,12 @@ button {
 
   .result-value {
     min-height: 68px;
-    font-size: 1.05rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: clamp(1.75rem, 7vw, 2.2rem);
+    font-weight: 700;
+    text-align: center;
   }
 
   .metrics-card {

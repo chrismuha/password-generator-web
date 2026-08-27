@@ -1,5 +1,8 @@
 <script setup>
+import { ref } from 'vue';
 import appIcon from '../assets/icon.svg';
+
+const passwordAlignment = ref('center');
 
 defineProps({
   password: {
@@ -44,8 +47,18 @@ defineEmits(['generate', 'copy', 'toggle-history', 'toggle-about']);
     </div>
 
     <div class="result-card">
-      <div class="result-value">{{ password }}</div>
-      <div class="result-meta">{{ length }} characters · {{ securityLabel }}</div>
+      <div class="result-value" :class="`align-${passwordAlignment}`">{{ password }}</div>
+      <div class="result-details">
+        <div class="alignment-toggle" aria-label="Password alignment">
+          <button type="button" aria-label="Align password left" :aria-pressed="passwordAlignment === 'left'" @click="passwordAlignment = 'left'">
+            <i class="bi bi-text-left"></i>
+          </button>
+          <button type="button" aria-label="Center password" :aria-pressed="passwordAlignment === 'center'" @click="passwordAlignment = 'center'">
+            <i class="bi bi-text-center"></i>
+          </button>
+        </div>
+        <div class="result-meta">{{ length }} characters · {{ securityLabel }}</div>
+      </div>
       <button class="result-action" type="button" @click="$emit('generate')">Generate Password</button>
       <button class="result-action" type="button" @click="$emit('copy')">Copy to Clipboard</button>
     </div>

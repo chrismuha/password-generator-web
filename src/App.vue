@@ -301,8 +301,9 @@ onBeforeUnmount(() => {
             <p><strong>{{ isDesktopApp ? 'Desktop app' : 'Web app' }}</strong></p>
             <p>The password generator, options, defaults, entropy calculation, secure randomness, history, symbol settings, and clipboard behavior are the same in both versions.</p>
             <ul>
-              <li>The desktop edition includes a native window, startup screen, installers, and operating-system packaging.</li>
-              <li>The web edition runs in a browser, follows browser clipboard permissions, and adapts to smaller screens.</li>
+              <li>The desktop edition uses a compact, fixed-size native window. On macOS, it includes dedicated space for the window controls. It also includes a startup screen, installers, and operating-system packaging.</li>
+              <li>The web edition fills the browser viewport and adapts to the available screen size. On phones, its metrics stack vertically, content scrolls inside the visible app area, and spacing accounts for device safe areas.</li>
+              <li>The web edition follows browser clipboard permissions, while the desktop edition uses the native app environment.</li>
               <li>Fonts can render slightly differently depending on the browser and operating system.</li>
               <li>Password history is temporary and resets when the app or page is restarted.</li>
             </ul>

@@ -155,9 +155,9 @@ function cycleSeparator() {
           </button>
         </div>
         <div class="info-panel">
-          <p><strong>Groups</strong> split your password into equal sections, which can make a long password easier to read or type.</p>
-          <p>The total number of password characters is <strong>groups × characters per group</strong>. For example, 4 groups of 4 characters creates 16 characters.</p>
-          <p>Your selected separator appears between groups. Choosing <strong>None</strong> keeps the same total characters without visible breaks.</p>
+          <p>Groups split your password into equal sections, which can make a long password easier to read or type.</p>
+          <p>The total number of password characters is groups × characters per group. For example, 4 groups of 4 characters creates 16 characters.</p>
+          <p>Your selected separator appears between groups. Choosing None keeps the same total characters without visible breaks.</p>
         </div>
       </div>
     </section>
