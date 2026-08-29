@@ -5,9 +5,7 @@
     </filter>
   </defs>
 
-  <!-- Keep the canvas opaque for unmasked renderers while retaining the rounded
-       app-icon face. The black corner fill prevents browsers from showing white. -->
-  <rect width="1024" height="1024" fill="#000000"/>
+  <!-- Leave the canvas transparent so unmasked renderers preserve the corners. -->
   <rect width="1024" height="1024" rx="220" fill="#111111"/>
 
   <g filter="url(#lockShadow)">
