@@ -5,7 +5,10 @@
     </filter>
   </defs>
 
-  <rect width="1024" height="1024" rx="220" fill="#111111"/>
+  <!-- Favicons are not consistently masked by browsers. Keep the canvas opaque so
+       unmasked renderers (notably Safari search suggestions) cannot show white
+       through the rounded app-icon corners. -->
+  <rect width="1024" height="1024" fill="#111111"/>
 
   <g filter="url(#lockShadow)">
     <path d="M337 442V312C337 198 405 132 512 132s175 66 175 180v130" fill="none" stroke="#ededee" stroke-width="86" stroke-linecap="round"/>
