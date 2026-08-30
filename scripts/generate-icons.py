@@ -9,6 +9,8 @@ ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "src/assets/icon.png"
 PUBLIC = ROOT / "public"
 OUTPUTS = {
+    "favicon-32x32.png": 32,
+    "favicon-48x48.png": 48,
     "pwa-icon-192.png": 192,
     "pwa-icon-512.png": 512,
     "pwa-icon-maskable-512.png": 512,
@@ -32,6 +34,10 @@ def main() -> None:
     for filename, size in OUTPUTS.items():
         icon = master.resize((size, size), Image.Resampling.LANCZOS)
         icon.save(PUBLIC / filename, optimize=True)
+    master.save(
+        PUBLIC / "favicon.ico",
+        sizes=[(16, 16), (32, 32), (48, 48)],
+    )
 
 
 if __name__ == "__main__":
