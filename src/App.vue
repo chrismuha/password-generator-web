@@ -10,6 +10,30 @@ const UPPERCASE = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 const NUMBERS = '0123456789';
 const AVAILABLE_SYMBOLS = ['&', '\'', '*', '@', '"', '^', '>', '}', ')', ']', ':', '$', '=', '!', '-', '<', '{', '(', '[', '%', '+', '#', '?', ';', '/', '~'];
 const AMBIGUOUS = new Set(['0', 'O', 'o', '1', 'l', 'I', '|']);
+const HISTORY_STORAGE_KEY = 'password-generator-history';
+const HISTORY_PERSISTENCE_KEY = 'password-generator-persist-history';
+
+function shouldPersistHistory() {
+  return window.localStorage.getItem(HISTORY_PERSISTENCE_KEY) === 'true';
+}
+
+function loadPersistedHistory() {
+  if (!shouldPersistHistory()) return [];
+
+  try {
+    const storedHistory = JSON.parse(window.localStorage.getItem(HISTORY_STORAGE_KEY) || '[]');
+    if (!Array.isArray(storedHistory)) return [];
+
+    return storedHistory.filter((entry) => (
+      entry
+      && typeof entry.value === 'string'
+      && typeof entry.length === 'number'
+      && typeof entry.createdAt === 'string'
+    )).slice(0, 10);
+  } catch {
+    return [];
+  }
+}
 
 const state = ref({
   groups: 4,
@@ -19,6 +43,7 @@ const state = ref({
   includeSymbols: true,
   excludeAmbiguous: true,
   historyOnCopyOnly: true,
+  persistHistory: shouldPersistHistory(),
   copyFeedbackEnabled: true,
   copyFeedbackSeconds: 5,
   noSeparators: true,
@@ -30,7 +55,7 @@ const password = ref('');
 const status = ref('Ready');
 const copied = ref(false);
 let copyFeedbackTimer;
-const history = ref([]);
+const history = ref(loadPersistedHistory());
 const historyOpen = ref(false);
 const entropyInfoOpen = ref(false);
 const charsetInfoOpen = ref(false);
@@ -245,6 +270,22 @@ watch(() => state.value.copyFeedbackEnabled, (isEnabled) => {
   if (!isEnabled) showCopyFeedback();
 });
 
+watch(() => state.value.persistHistory, (isEnabled) => {
+  window.localStorage.setItem(HISTORY_PERSISTENCE_KEY, String(isEnabled));
+
+  if (isEnabled) {
+    window.localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(history.value));
+  } else {
+    window.localStorage.removeItem(HISTORY_STORAGE_KEY);
+  }
+});
+
+watch(history, (entries) => {
+  if (state.value.persistHistory) {
+    window.localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(entries));
+  }
+}, { deep: true });
+
 watch(() => state.value.noSeparators, (isDisabled) => {
   if (isDisabled) {
     status.value = 'Separators disabled';
@@ -336,7 +377,7 @@ onBeforeUnmount(() => {
               <li>The web edition fills the browser viewport and adapts to the available screen size. On phones, its metrics stack vertically, content scrolls inside the visible app area, and spacing accounts for device safe areas.</li>
               <li>The web edition follows browser clipboard permissions, while the desktop edition uses the native app environment.</li>
               <li>Fonts can render slightly differently depending on the browser and operating system.</li>
-              <li>Password history is temporary and resets when the app or page is restarted.</li>
+              <li>Password history is temporary by default. You can opt in to keeping it across refreshes and restarts in Options.</li>
             </ul>
           </div>
         </div>

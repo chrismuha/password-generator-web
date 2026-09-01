@@ -129,6 +129,12 @@ function cycleSeparator() {
         @toggle="patchState({ historyOnCopyOnly: !state.historyOnCopyOnly })"
       />
       <OptionRow
+        label="Keep history after refresh"
+        kind="toggle"
+        :checked="state.persistHistory"
+        @toggle="patchState({ persistHistory: !state.persistHistory })"
+      />
+      <OptionRow
         label="Show copied confirmation"
         kind="toggle"
         :checked="state.copyFeedbackEnabled"
