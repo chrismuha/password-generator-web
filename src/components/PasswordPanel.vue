@@ -20,6 +20,10 @@ defineProps({
   securityLabel: {
     type: String,
     required: true
+  },
+  copied: {
+    type: Boolean,
+    default: false
   }
 });
 
@@ -60,7 +64,12 @@ defineEmits(['generate', 'copy', 'toggle-history', 'toggle-about']);
         <div class="result-meta">{{ length }} characters · {{ securityLabel }}</div>
       </div>
       <button class="result-action" type="button" @click="$emit('generate')">Generate Password</button>
-      <button class="result-action" type="button" @click="$emit('copy')">Copy to Clipboard</button>
+      <button
+        class="result-action copy-action"
+        :class="{ 'is-copied': copied }"
+        type="button"
+        @click="$emit('copy')"
+      >{{ copied ? 'Copied' : 'Copy to Clipboard' }}</button>
     </div>
   </section>
 </template>

@@ -222,6 +222,16 @@ button {
   cursor: pointer;
 }
 
+.copy-action {
+  transition: color 160ms ease, font-size 160ms ease, font-weight 160ms ease;
+}
+
+.result-action.copy-action.is-copied {
+  color: #30d158;
+  font-size: 1.35rem;
+  font-weight: 800;
+}
+
 .options-panel {
   margin-top: 0;
   display: flex;

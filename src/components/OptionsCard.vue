@@ -43,7 +43,8 @@ const emit = defineEmits([
   'toggle-entropy-info',
   'update:state',
   'update:groups',
-  'update:chars-per-group'
+  'update:chars-per-group',
+  'update:copy-feedback-seconds'
 ]);
 
 const separators = [
@@ -126,6 +127,20 @@ function cycleSeparator() {
         kind="toggle"
         :checked="state.historyOnCopyOnly"
         @toggle="patchState({ historyOnCopyOnly: !state.historyOnCopyOnly })"
+      />
+      <OptionRow
+        label="Show copied confirmation"
+        kind="toggle"
+        :checked="state.copyFeedbackEnabled"
+        @toggle="patchState({ copyFeedbackEnabled: !state.copyFeedbackEnabled })"
+      />
+      <OptionRow
+        v-if="state.copyFeedbackEnabled"
+        label="Copied confirmation time"
+        kind="stepper"
+        :value="`${state.copyFeedbackSeconds} sec`"
+        @decrement="$emit('update:copy-feedback-seconds', state.copyFeedbackSeconds - 1)"
+        @increment="$emit('update:copy-feedback-seconds', state.copyFeedbackSeconds + 1)"
       />
       <OptionRow
         label="Special characters"

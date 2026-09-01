@@ -19,6 +19,8 @@ const state = ref({
   includeSymbols: true,
   excludeAmbiguous: true,
   historyOnCopyOnly: true,
+  copyFeedbackEnabled: true,
+  copyFeedbackSeconds: 5,
   noSeparators: true,
   separator: '',
   enabledSymbols: AVAILABLE_SYMBOLS
@@ -26,6 +28,8 @@ const state = ref({
 
 const password = ref('');
 const status = ref('Ready');
+const copied = ref(false);
+let copyFeedbackTimer;
 const history = ref([]);
 const historyOpen = ref(false);
 const entropyInfoOpen = ref(false);
@@ -190,6 +194,7 @@ async function copyPassword() {
   }
 
   await navigator.clipboard.writeText(password.value);
+  showCopyFeedback();
   if (state.value.historyOnCopyOnly) {
     addHistoryEntry(password.value);
     status.value = 'Copied to clipboard and saved to history';
@@ -201,7 +206,22 @@ async function copyPassword() {
 
 async function copyHistoryValue(value) {
   await navigator.clipboard.writeText(value);
+  showCopyFeedback();
   status.value = 'Copied history item to clipboard';
+}
+
+function showCopyFeedback() {
+  window.clearTimeout(copyFeedbackTimer);
+
+  if (!state.value.copyFeedbackEnabled) {
+    copied.value = false;
+    return;
+  }
+
+  copied.value = true;
+  copyFeedbackTimer = window.setTimeout(() => {
+    copied.value = false;
+  }, state.value.copyFeedbackSeconds * 1000);
 }
 
 function clearHistory() {
@@ -216,6 +236,14 @@ function updateGroups(nextValue) {
 function updateCharsPerGroup(nextValue) {
   state.value.charsPerGroup = Math.max(1, Math.min(32, nextValue));
 }
+
+function updateCopyFeedbackSeconds(nextValue) {
+  state.value.copyFeedbackSeconds = Math.max(1, Math.min(30, nextValue));
+}
+
+watch(() => state.value.copyFeedbackEnabled, (isEnabled) => {
+  if (!isEnabled) showCopyFeedback();
+});
 
 watch(() => state.value.noSeparators, (isDisabled) => {
   if (isDisabled) {
@@ -242,6 +270,7 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
+  window.clearTimeout(copyFeedbackTimer);
   window.removeEventListener('keydown', handleTabAndEscapeFocus);
 });
 </script>
@@ -256,6 +285,7 @@ onBeforeUnmount(() => {
         :history-count="history.length"
         :length="renderedLength"
         :security-label="securityLabel"
+        :copied="copied"
         @generate="buildPassword()"
         @copy="copyPassword"
         @toggle-history="historyOpen = !historyOpen"
@@ -279,6 +309,7 @@ onBeforeUnmount(() => {
         @update:state="state = $event"
         @update:groups="updateGroups"
         @update:chars-per-group="updateCharsPerGroup"
+        @update:copy-feedback-seconds="updateCopyFeedbackSeconds"
       />
 
       <HistoryCard
