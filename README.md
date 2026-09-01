@@ -14,9 +14,11 @@ The desktop and web editions share the same Vue interface, password-generation l
 | Startup | Native startup screen | Browser page loading |
 | Clipboard | Electron renderer clipboard access | Subject to browser clipboard permissions |
 | Fonts | Operating-system desktop fonts | Can vary by browser and operating system |
-| History | Temporary; resets when restarted | Temporary; resets when reloaded |
+| History | Temporary by default; optional local persistence in the app profile | Temporary by default; optional local persistence for the website |
 
 The actual password-generation algorithm is the same in both editions and uses `crypto.getRandomValues()` with rejection sampling.
+
+See [Release Notes](RELEASE_NOTES.md) for the latest user-facing changes.
 
 ## Desktop edition
 
