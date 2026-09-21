@@ -6,7 +6,9 @@
     "generate-icons": "python3 ./scripts/generate-icons.py",
     "dev": "vite --host 127.0.0.1 --port 5187 --strictPort",
     "build": "vite build",
-    "preview": "vite preview --host 127.0.0.1 --port 5187 --strictPort"
+    "preview": "vite preview --host 127.0.0.1 --port 5187 --strictPort",
+    "dev:web": "vite --host 127.0.0.1 --port 5187 --strictPort --open /dev-preview.html",
+    "dev:mobile:web": "npm run dev:web"
   },
   "dependencies": {
     "bootstrap-icons": "^1.13.1",
