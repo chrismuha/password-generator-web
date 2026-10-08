@@ -39,6 +39,9 @@ def main() -> None:
         sizes=[(16, 16), (32, 32), (48, 48)],
     )
 
+    import subprocess
+    subprocess.run(["python3", str(ROOT / "scripts/standardize-macos-icon.py"), str(SOURCE), str(ROOT / "build/icon-mac-standard.png"), str(ROOT / "build/icon.icns")], check=True)
+
 
 if __name__ == "__main__":
     main()
