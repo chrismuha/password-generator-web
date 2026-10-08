@@ -19,5 +19,8 @@
     "vite": "^8.3.1"
   },
   "type": "module",
-  "license": "MIT"
+  "license": "MIT",
+  "overrides": {
+    "source-map-js": "1.2.2"
+  }
 }
