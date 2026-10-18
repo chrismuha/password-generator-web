@@ -8,7 +8,8 @@
     "build": "vite build",
     "preview": "vite preview --host 127.0.0.1 --port 5187 --strictPort",
     "dev:web": "vite --host 127.0.0.1 --port 5187 --strictPort --open /dev-preview.html",
-    "dev:mobile:web": "npm run dev:web"
+    "dev:mobile:web": "npm run dev:web",
+    "prebuild": "node ./scripts/prepare-build-output.cjs"
   },
   "dependencies": {
     "bootstrap-icons": "^1.13.2",
@@ -22,5 +23,8 @@
   "license": "MIT",
   "overrides": {
     "source-map-js": "1.2.2"
-  }
+  },
+  "mcrBuildOutputs": [
+    "dist"
+  ]
 }
