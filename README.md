@@ -9,7 +9,7 @@ The desktop and web editions share the same Vue interface, password-generation l
 | Area | Desktop edition | Web edition |
 | --- | --- | --- |
 | Runtime | Electron application | Web browser |
-| Window | Fixed native application window | Responsive browser page |
+| Window | Resizable native window fitted to the display | Responsive browser page |
 | Distribution | macOS, Windows, and Linux packages | GitHub Pages website |
 | Startup | Native startup screen | Browser page loading |
 | Clipboard | Electron renderer clipboard access | Subject to browser clipboard permissions |
@@ -38,3 +38,7 @@ npm run build
 ```
 
 GitHub Pages deploys automatically from the `main` branch.
+
+## User guide
+
+See [User Guide](USER_GUIDE.md) for current workflows, storage, and limitations.

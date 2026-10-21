@@ -1,4 +1,5 @@
-const { app, BrowserWindow, nativeImage } = require('electron');
+const { app, BrowserWindow, nativeImage, screen } = require('electron');
+const { fitWindowToWorkArea } = require('../window-geometry.cjs');
 app.disableHardwareAcceleration();
 app.commandLine.appendSwitch('disable-gpu');
 app.commandLine.appendSwitch('disable-gpu-compositing');
@@ -192,11 +193,10 @@ function createSplashWindow() {
 function createWindow() {
   const appIconPath = getAppIconPath();
   mainWindow = new BrowserWindow({
-    width: 1500,
-    height: 1080,
-    resizable: false,
-    maximizable: false,
-    fullscreenable: false,
+    ...fitWindowToWorkArea(screen.getPrimaryDisplay(), { width: 1100, height: 850 }),
+    resizable: true,
+    maximizable: true,
+    fullscreenable: true,
     backgroundColor: '#111111',
     title: 'Password Generator',
     titleBarStyle: process.platform === 'darwin' ? 'hiddenInset' : 'default',

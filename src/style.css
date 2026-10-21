@@ -756,3 +756,7 @@ button {
     grid-template-columns: 1fr;
   }
 }
+
+/* Keep the desktop-sized web layout bounded at every viewport height. */
+.app-shell { min-height:0; height:100dvh; }
+.app-frame { min-width:0; }
