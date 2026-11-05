@@ -1,5 +1,10 @@
 # password-generator-web Change List
 
+## November 4, 2026 — Help access
+
+- Moved floating Help access to a compact right-edge tab above the bottom controls. Existing inline Help buttons remain available.
+- Updated the shared Help access guide while preserving Contact us, Report an issue, Known issues, Coming soon, and Tips & troubleshooting.
+
 ## October 29, 2026 — Current Device Web Preview
 
 - Add Current device as the default screen tester preset, filling the available browser area without a simulated device frame.
