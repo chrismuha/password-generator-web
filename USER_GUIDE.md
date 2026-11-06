@@ -15,3 +15,16 @@ History keeps at most ten entries. By default only copied passwords enter histor
 ## Feedback, keyboard, and editions
 
 Copy feedback can be enabled and its duration adjusted from 1 to 30 seconds. Tab and Shift+Tab move between controls and wrap at the ends; Escape removes the current input focus. Desktop and web use the same generator. The browser edition depends on browser clipboard permissions and stores any persisted history for that website and browser profile. Desktop storage belongs to its app profile. They do not synchronize history across devices.
+
+## Foldable preview profiles
+
+In the development preview, choose a named device from Device:
+
+| Device | Open (CSS pixels) | Closed (CSS pixels) |
+| --- | --- | --- |
+| iPhone Duo | 890 × 626 | 466 × 678 |
+| Galaxy Z Fold7 | 750 × 832 | 412 × 960 |
+
+Rotate swaps the selected width and height. These are display-sized CSS test presets; browser controls and display settings can change the usable page viewport. The iPhone Duo opens in landscape. Selecting a preset resizes the preview only; it does not rearrange application content.
+
+Dimensions: [Apple iPhone Duo specifications](https://www.apple.com/iphone-duo/specs/) (display pixels divided by 3), [Galaxy Z Fold7 open measurement](https://www.effectiveviewport.com/devices/samsung-galaxy-z-fold7-unfolded/), and [Galaxy Z Fold7 closed measurement](https://www.effectiveviewport.com/devices/samsung-galaxy-z-fold7-folded/).
