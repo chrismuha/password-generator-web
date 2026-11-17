@@ -12,7 +12,7 @@ Keep documented issues, planned features, user guides, and release notes in sync
 
 Help appears as a standard horizontal button in normal page flow, outside the working content. It does not float over app controls. Only Monopoly Deal uses a right-edge tab. The five Help sections, existing user guide, and release history remain available; app versions are unchanged.
 
-Location: open Help in the password heading area. Its button occupies its own layout space.
+Open **Help** below Options. The **User Guide** is in the generator header.
 
 ## Fixed issues and bug reports
 

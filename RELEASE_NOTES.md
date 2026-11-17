@@ -2,10 +2,16 @@
 
 ## 0.1.0 — TBD
 
+### Generation
+
+- Added a Generate Passphrase button below Generate Password, with adjustable word count and separators.
+- Waits for Generate Password or Generate Passphrase before showing the first result.
+
 ### Help and support
 
 - Added a compact Bug Report button with a bug icon inside Help that opens the issue-report instructions and email template.
 - Added a Fixed section in Help Known issues with How we fixed it explanations and user-facing notes for completed fixes.
+- Moved Help below Options and User Guide to the top of the generator.
 
 
 ## November 4, 2026 — Help access

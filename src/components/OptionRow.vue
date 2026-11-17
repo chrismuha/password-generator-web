@@ -41,9 +41,9 @@ defineEmits(['toggle', 'decrement', 'increment', 'click', 'info-click']);
     </span>
 
     <div v-if="kind === 'stepper'" class="stepper" @click.stop>
-      <button type="button" class="stepper-button" aria-label="Decrease" @click="$emit('decrement')">−</button>
+      <button type="button" class="stepper-button" :aria-label="`Decrease ${label.toLowerCase()}`" @click="$emit('decrement')">−</button>
       <span class="stepper-value">{{ value }}</span>
-      <button type="button" class="stepper-button" aria-label="Increase" @click="$emit('increment')">+</button>
+      <button type="button" class="stepper-button" :aria-label="`Increase ${label.toLowerCase()}`" @click="$emit('increment')">+</button>
     </div>
 
     <button

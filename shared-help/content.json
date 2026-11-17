@@ -4,6 +4,10 @@
   "comingSoon": [],
   "usageTips": [
     {
+      "title": "Generate a passphrase",
+      "description": "Select Generate Passphrase below Generate Password. Adjust the word count or separator in Options, then use Copy to Clipboard to save the result to history with the default history setting."
+    },
+    {
       "title": "User guide and release notes",
       "description": "Keep using this app\u2019s existing guide and release notes for feature instructions and version history."
     }

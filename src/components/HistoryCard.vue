@@ -22,7 +22,7 @@ defineEmits(['clear-history', 'close', 'copy']);
           <h2>Password History</h2>
           <p class="history-subtitle">
             <span>{{ history.length }} {{ history.length === 1 ? 'entry' : 'entries' }}</span>
-            <span>Click any saved password to copy it again.</span>
+            <span>Select a saved entry to copy it again.</span>
           </p>
         </div>
         <div class="history-header-actions">
@@ -44,8 +44,8 @@ defineEmits(['clear-history', 'close', 'copy']);
 
       <div class="history-list" v-else>
         <article class="history-item">
-          <div class="history-value">No generated passwords yet.</div>
-          <div class="history-meta">Use Generate Password to add entries here.</div>
+          <div class="history-value">No saved passwords or passphrases yet.</div>
+          <div class="history-meta">Copy a generated result to save it here.</div>
         </article>
       </div>
     </div>

@@ -12,7 +12,11 @@ const props = defineProps({
     type: Array,
     required: true
   },
-  charsetSize: {
+  isPassphrase: {
+    type: Boolean,
+    required: true
+  },
+  poolSize: {
     type: Number,
     required: true
   },
@@ -21,7 +25,7 @@ const props = defineProps({
     required: true
   },
   entropyBits: {
-    type: Number,
+    type: [Number, null],
     required: true
   },
   entropyInfoOpen: {
@@ -43,6 +47,7 @@ const emit = defineEmits([
   'toggle-entropy-info',
   'update:state',
   'update:groups',
+  'update:word-count',
   'update:chars-per-group',
   'update:copy-feedback-seconds'
 ]);
@@ -89,39 +94,58 @@ function cycleSeparator() {
     <h2>Options</h2>
 
     <div class="list-card">
-      <OptionRow
-        label="Groups"
-        info-label="What are password groups?"
-        kind="stepper"
-        :value="`${state.groups} groups`"
-        @info-click="groupsInfoOpen = true"
-        @decrement="$emit('update:groups', state.groups - 1)"
-        @increment="$emit('update:groups', state.groups + 1)"
-      />
-      <OptionRow
-        label="Include uppercase"
-        kind="toggle"
-        :checked="state.includeUppercase"
-        @toggle="patchState({ includeUppercase: !state.includeUppercase })"
-      />
-      <OptionRow
-        label="Include random number"
-        kind="toggle"
-        :checked="state.includeNumbers"
-        @toggle="patchState({ includeNumbers: !state.includeNumbers })"
-      />
-      <OptionRow
-        label="Include special character"
-        kind="toggle"
-        :checked="state.includeSymbols"
-        @toggle="patchState({ includeSymbols: !state.includeSymbols })"
-      />
-      <OptionRow
-        label="Exclude ambiguous"
-        kind="toggle"
-        :checked="state.excludeAmbiguous"
-        @toggle="patchState({ excludeAmbiguous: !state.excludeAmbiguous })"
-      />
+      <template v-if="isPassphrase">
+        <OptionRow
+          label="Word count"
+          kind="stepper"
+          :value="`${state.wordCount} words`"
+          @decrement="$emit('update:word-count', state.wordCount - 1)"
+          @increment="$emit('update:word-count', state.wordCount + 1)"
+        />
+        <label class="option-row">
+          <span class="option-label">Word separator</span>
+          <select class="word-separator" :value="state.wordSeparator" @change="patchState({ wordSeparator: $event.target.value })">
+            <option value="-">Hyphen</option>
+            <option value=" ">Space</option>
+            <option value=".">Dot</option>
+          </select>
+        </label>
+      </template>
+      <template v-else>
+        <OptionRow
+          label="Groups"
+          info-label="What are password groups?"
+          kind="stepper"
+          :value="`${state.groups} groups`"
+          @info-click="groupsInfoOpen = true"
+          @decrement="$emit('update:groups', state.groups - 1)"
+          @increment="$emit('update:groups', state.groups + 1)"
+        />
+        <OptionRow
+          label="Include uppercase"
+          kind="toggle"
+          :checked="state.includeUppercase"
+          @toggle="patchState({ includeUppercase: !state.includeUppercase })"
+        />
+        <OptionRow
+          label="Include random number"
+          kind="toggle"
+          :checked="state.includeNumbers"
+          @toggle="patchState({ includeNumbers: !state.includeNumbers })"
+        />
+        <OptionRow
+          label="Include special character"
+          kind="toggle"
+          :checked="state.includeSymbols"
+          @toggle="patchState({ includeSymbols: !state.includeSymbols })"
+        />
+        <OptionRow
+          label="Exclude ambiguous"
+          kind="toggle"
+          :checked="state.excludeAmbiguous"
+          @toggle="patchState({ excludeAmbiguous: !state.excludeAmbiguous })"
+        />
+      </template>
       <OptionRow
         label="Save only copied passwords"
         kind="toggle"
@@ -148,23 +172,25 @@ function cycleSeparator() {
         @decrement="$emit('update:copy-feedback-seconds', state.copyFeedbackSeconds - 1)"
         @increment="$emit('update:copy-feedback-seconds', state.copyFeedbackSeconds + 1)"
       />
-      <OptionRow
-        label="Special characters"
-        :value="enabledSymbolCount"
-        @click="$emit('open-symbol-settings')"
-      />
-      <OptionRow
-        label="Separator"
-        :value="separatorLabel"
-        @click="cycleSeparator"
-      />
-      <OptionRow
-        label="Characters per group"
-        kind="stepper"
-        :value="`${state.charsPerGroup} chars`"
-        @decrement="$emit('update:chars-per-group', state.charsPerGroup - 1)"
-        @increment="$emit('update:chars-per-group', state.charsPerGroup + 1)"
-      />
+      <template v-if="!isPassphrase">
+        <OptionRow
+          label="Special characters"
+          :value="enabledSymbolCount"
+          @click="$emit('open-symbol-settings')"
+        />
+        <OptionRow
+          label="Separator"
+          :value="separatorLabel"
+          @click="cycleSeparator"
+        />
+        <OptionRow
+          label="Characters per group"
+          kind="stepper"
+          :value="`${state.charsPerGroup} chars`"
+          @decrement="$emit('update:chars-per-group', state.charsPerGroup - 1)"
+          @increment="$emit('update:chars-per-group', state.charsPerGroup + 1)"
+        />
+      </template>
     </div>
 
     <section v-if="groupsInfoOpen" class="info-overlay" @click.self="groupsInfoOpen = false">
@@ -186,12 +212,12 @@ function cycleSeparator() {
     <div class="metrics-card">
       <div>
         <span class="metric-label metric-label-row">
-          <span>Charset</span>
-          <button class="metric-info-button" type="button" aria-label="What is charset?" @click="$emit('toggle-charset-info')">
+          <span>{{ isPassphrase ? 'Word list' : 'Charset' }}</span>
+          <button class="metric-info-button" type="button" :aria-label="isPassphrase ? 'About the word list' : 'What is charset?'" @click="$emit('toggle-charset-info')">
             <i class="bi bi-info-circle"></i>
           </button>
         </span>
-        <strong>{{ charsetSize }} characters</strong>
+        <strong>{{ poolSize.toLocaleString() }} {{ isPassphrase ? 'words' : 'characters' }}</strong>
       </div>
       <div>
         <span class="metric-label metric-label-row">
@@ -200,22 +226,28 @@ function cycleSeparator() {
             <i class="bi bi-info-circle"></i>
           </button>
         </span>
-        <strong>{{ entropyBits }} bits</strong>
+        <strong>{{ entropyBits === null ? '—' : `${entropyBits} bits` }}</strong>
       </div>
     </div>
 
     <section v-if="charsetInfoOpen" class="info-overlay" @click.self="$emit('close-charset-info')">
       <div class="info-modal">
         <div class="info-modal-header">
-          <span>Charset</span>
-          <button class="info-modal-close" type="button" aria-label="Close charset help" @click="$emit('close-charset-info')">
+          <span>{{ isPassphrase ? 'Word list' : 'Charset' }}</span>
+          <button class="info-modal-close" type="button" aria-label="Close character set or word list help" @click="$emit('close-charset-info')">
             <i class="bi bi-x-lg"></i>
           </button>
         </div>
         <div class="info-panel">
-          <p><strong>Charset</strong> is the number of different characters the generator can currently choose from.</p>
-          <p>If it says <strong>58</strong>, the password can be built from 58 possible characters based on your current settings.</p>
-          <p>More available characters usually means more entropy and a harder password to guess.</p>
+          <template v-if="isPassphrase">
+            <p>Each word is picked independently with secure randomness from {{ poolSize.toLocaleString() }} possible words.</p>
+            <p>Source <a href="https://www.eff.org/deeplinks/2016/07/new-wordlists-random-passphrases" target="_blank" rel="noreferrer">Electronic Frontier Foundation’s long word list</a>, licensed under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noreferrer">CC BY 4.0</a>. Four hyphenated entries were omitted so a hyphen always marks a word boundary.</p>
+          </template>
+          <template v-else>
+            <p><strong>Charset</strong> is the number of different characters the generator can currently choose from.</p>
+            <p>If it says <strong>58</strong>, the password can be built from 58 possible characters based on your current settings.</p>
+            <p>More available characters usually means more entropy and a harder password to guess.</p>
+          </template>
         </div>
       </div>
     </section>

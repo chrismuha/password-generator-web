@@ -269,6 +269,24 @@ button {
   border-bottom: 0;
 }
 
+.word-separator {
+  max-width: 50%;
+  padding: 6px 8px;
+  border: 1px solid #727275;
+  border-radius: 8px;
+  background: #2f2f31;
+  color: inherit;
+}
+
+.info-panel a {
+  color: #a9cfff;
+}
+
+.copy-action:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
 .option-label,
 .option-value {
   font-size: 0.9rem;
@@ -529,10 +547,6 @@ button {
   margin-bottom: 0;
 }
 
-.version-modal {
-  width: min(560px, 100%);
-}
-
 .version-info p {
   line-height: 1.5;
 }
@@ -540,7 +554,6 @@ button {
 .version-info ul {
   margin: 10px 0 0;
   padding-left: 20px;
-  color: #c5c5c7;
 }
 
 .version-info li {

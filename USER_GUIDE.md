@@ -4,9 +4,15 @@
 
 Choose Groups and Characters Per Group, then Generate Password. The random-character count is their product; separators add displayed characters between groups. Lowercase letters are always available. Uppercase, numbers, special characters, and exclusion of ambiguous characters are optional. Use Copy to place the current password on the clipboard; check the status if browser clipboard permission is denied.
 
+## Generate a passphrase
+
+Select **Generate Passphrase** below **Generate Password**. The default is six random words joined by hyphens. Use **Word count** to choose 4 to 12 words and **Word separator** to choose Hyphen, Space, or Dot. Entropy is based on the size of the word list and how many words were chosen. Both formats use the same copy and history controls. Generate Password returns you to the character password options.
+
+The word list is adapted from the Electronic Frontier Foundation’s long word list, with four hyphenated entries omitted so a hyphen always marks a word boundary. [EFF word list](https://www.eff.org/deeplinks/2016/07/new-wordlists-random-passphrases) · [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+
 ## Symbols and separators
 
-Open Special Characters in Options to include or exclude individual symbols, Select All, or Select None. Turning special characters off excludes that pool. Separator choices are Dot, hyphen, Space, and None; None is the default. Changing options regenerates the displayed password. Charset shows the available character count; entropy and its labels are estimates from length and charset, not a guarantee about an account or service.
+Open Special Characters in Options to include or exclude individual symbols, Select All, or Select None. Turning special characters off excludes that pool. Separator choices are Dot, hyphen, Space, and None; None is the default. After you generate your first result, changing options regenerates the displayed result. Charset shows the available character count; entropy and its labels are estimates from length and charset, not a guarantee about an account or service.
 
 ## History and local persistence
 
@@ -34,6 +40,6 @@ The Device list is alphabetical, with Current device first and Custom last. The 
 
 ## Fixed issues and bug reports
 
-Open Help → Known issues to see documented problems and the Fixed section. Each completed fix can show its version, what happened, a **How we fixed it** explanation, and **What this means for you** notes. Only verified fixes belong here; an empty section means none are currently listed. Existing unresolved issues remain under Known issues.
+Open Help below Options, then select Known issues to see documented problems and the Fixed section. Each completed fix can show its version, what happened, a **How we fixed it** explanation, and **What this means for you** notes. Only verified fixes belong here; an empty section means none are currently listed. Existing unresolved issues remain under Known issues.
 
 Use the small **🐛 Bug Report** button at the bottom of the Help window from any section. It opens Report an issue inside the same window, where you can prepare an email draft, review it, and send it from your email app. It never sends a report automatically. Close or Escape returns to the program.

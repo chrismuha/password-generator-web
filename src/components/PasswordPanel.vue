@@ -13,7 +13,7 @@ defineProps({
     type: Number,
     required: true
   },
-  length: {
+  wordCount: {
     type: Number,
     required: true
   },
@@ -39,7 +39,7 @@ defineEmits(['generate', 'copy', 'toggle-history', 'toggle-about']);
           <h1>Password Generator</h1>
         </div>
         <div class="hero-toolbar">
-          <button class="toolbar-button" type="button" aria-label="About desktop and web versions" @click="$emit('toggle-about')">
+          <button class="toolbar-button" type="button" aria-label="What’s New and version information" aria-haspopup="dialog" @click="$emit('toggle-about')">
             <i class="bi bi-info-circle"></i>
           </button>
           <button class="toolbar-button" type="button" aria-label="Password history" @click="$emit('toggle-history')">
@@ -48,11 +48,12 @@ defineEmits(['generate', 'copy', 'toggle-history', 'toggle-about']);
           </button>
         </div>
       </div>
+      <slot />
     </div>
 
     <div class="result-card">
       <div class="result-value" :class="`align-${passwordAlignment}`">{{ password }}</div>
-      <div class="result-details">
+      <div v-if="password" class="result-details">
         <div class="alignment-toggle" aria-label="Password alignment">
           <button type="button" aria-label="Align password left" :aria-pressed="passwordAlignment === 'left'" @click="passwordAlignment = 'left'">
             <i class="bi bi-text-left"></i>
@@ -61,13 +62,15 @@ defineEmits(['generate', 'copy', 'toggle-history', 'toggle-about']);
             <i class="bi bi-text-center"></i>
           </button>
         </div>
-        <div class="result-meta">{{ length }} characters · {{ securityLabel }}</div>
+        <div class="result-meta">{{ wordCount ? `${wordCount} words · ` : '' }}{{ password.length }} characters · {{ securityLabel }}</div>
       </div>
-      <button class="result-action" type="button" @click="$emit('generate')">Generate Password</button>
+      <button class="result-action" type="button" @click="$emit('generate', 'password')">Generate Password</button>
+      <button class="result-action" type="button" @click="$emit('generate', 'passphrase')">Generate Passphrase</button>
       <button
         class="result-action copy-action"
         :class="{ 'is-copied': copied }"
         type="button"
+        :disabled="!password"
         @click="$emit('copy')"
       >{{ copied ? 'Copied' : 'Copy to Clipboard' }}</button>
     </div>

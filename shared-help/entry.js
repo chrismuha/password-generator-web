@@ -4,10 +4,10 @@ import packageInfo from '../package.json';
 import details from './content.json';
 const container=document.createElement('div');
 container.className='shared-suite-help';
-container.style.cssText='display:flex;align-items:center;justify-content:flex-end;flex:0 0 auto;padding:12px;box-sizing:border-box;';
-// Keep Help in the existing controls, with its own space in normal flow.
+container.style.cssText='display:flex;align-items:center;flex:0 0 auto;';
+// Place the shared Help button below the generator options.
 function placeHelp(){
- const target=document.querySelector('.hero-heading');
+ const target=document.querySelector('#password-generator-help');
  if(target&&container.parentElement!==target)target.append(container);
 }
 placeHelp();

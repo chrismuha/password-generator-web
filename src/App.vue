@@ -5,6 +5,8 @@ import PasswordPanel from './components/PasswordPanel.vue';
 import OptionsCard from './components/OptionsCard.vue';
 import HistoryCard from './components/HistoryCard.vue';
 import UserGuideDialog from './components/UserGuideDialog.vue';
+import ReleaseNotesDialog from './components/ReleaseNotesDialog.vue';
+import wordlist from './assets/eff-large-wordlist.txt?raw';
 const userGuideSections = [
   {
     "title": "Generate and copy",
@@ -14,10 +16,18 @@ const userGuideSections = [
     ]
   },
   {
+    "title": "Generate a passphrase",
+    "lines": [
+      "Select Generate Passphrase below Generate Password to create a phrase. The default is six words separated by hyphens.",
+      "In passphrase mode, use Word count and Word separator in Options to adjust the phrase. Entropy is based on the number of randomly chosen words and the size of the word list.",
+      "Use Copy to Clipboard or open Password History to copy a saved phrase. Select Generate Password to return to character passwords."
+    ]
+  },
+  {
     "title": "Symbols and separators",
     "lines": [
       "Open Special Characters in Options to include or exclude individual symbols, Select All, or Select None. Turning special characters off excludes that pool. Separator choices are Dot, hyphen, Space, and None; None is the default.",
-      "Changing options regenerates the displayed password. Charset shows the available character count; entropy and its labels are estimates from length and charset, not a guarantee about an account or service."
+      "After the first generation, changing options regenerates the displayed result. Charset shows the available character count; entropy and its labels are estimates from length and charset, not a guarantee about an account or service."
     ]
   },
   {
@@ -36,6 +46,7 @@ const userGuideSections = [
   }
 ];
 
+const PASSPHRASE_WORDS = wordlist.trim().split(/\s+/);
 const LOWERCASE = 'abcdefghijklmnopqrstuvwxyz';
 const UPPERCASE = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 const NUMBERS = '0123456789';
@@ -68,6 +79,8 @@ function loadPersistedHistory() {
 
 const state = ref({
   groups: 4,
+  wordCount: 6,
+  wordSeparator: '-',
   charsPerGroup: 4,
   includeUppercase: true,
   includeNumbers: true,
@@ -83,6 +96,8 @@ const state = ref({
 });
 
 const password = ref('');
+const generatedType = ref(null);
+const isPassphrase = computed(() => generatedType.value === 'passphrase');
 const status = ref('Ready');
 const copied = ref(false);
 let copyFeedbackTimer;
@@ -91,7 +106,7 @@ const historyOpen = ref(false);
 const entropyInfoOpen = ref(false);
 const charsetInfoOpen = ref(false);
 const symbolSettingsOpen = ref(false);
-const aboutOpen = ref(false);
+const releaseNotesDialog = ref(null);
 const isDesktopApp = Boolean(window.passwordGeneratorApi);
 const FOCUSABLE_SELECTOR = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"]), [contenteditable="true"]';
 
@@ -105,7 +120,7 @@ function getFocusableElements() {
 }
 
 function handleTabAndEscapeFocus(event) {
-  if (event.defaultPrevented) return;
+  if (event.defaultPrevented || document.querySelector('dialog[open]')) return;
 
   if (event.key === 'Escape') {
     const active = document.activeElement;
@@ -153,7 +168,7 @@ const activePools = computed(() => {
 
   if (state.value.includeUppercase) pools.push(UPPERCASE);
   if (state.value.includeNumbers) pools.push(NUMBERS);
-  if (state.value.includeSymbols) pools.push(symbolCharacters.value);
+  if (state.value.includeSymbols && symbolCharacters.value) pools.push(symbolCharacters.value);
 
   if (!state.value.excludeAmbiguous) return pools;
 
@@ -163,12 +178,8 @@ const activePools = computed(() => {
 const combinedCharset = computed(() => activePools.value.join(''));
 
 const totalCharacters = computed(() => state.value.groups * state.value.charsPerGroup);
-const renderedLength = computed(() => {
-  const separatorLength = state.value.noSeparators ? 0 : (state.value.groups - 1) * state.value.separator.length;
-  return totalCharacters.value + separatorLength;
-});
 const entropyBits = computed(() => {
-  if (!combinedCharset.value.length) return 0;
+  if (isPassphrase.value) return state.value.wordCount * Math.log2(PASSPHRASE_WORDS.length);
   return totalCharacters.value * Math.log2(combinedCharset.value.length);
 });
 const entropyWholeBits = computed(() => Math.round(entropyBits.value));
@@ -209,13 +220,7 @@ function addHistoryEntry(value) {
   history.value = history.value.slice(0, 10);
 }
 
-function buildPassword(recordHistory = true) {
-  if (!combinedCharset.value.length) {
-    password.value = '';
-    status.value = 'Select at least one usable character set.';
-    return;
-  }
-
+function generateCharacterPassword() {
   const characters = [];
 
   for (const pool of activePools.value) {
@@ -235,8 +240,20 @@ function buildPassword(recordHistory = true) {
     groups.push(shuffled.slice(index, index + state.value.charsPerGroup).join(''));
   }
 
-  password.value = state.value.noSeparators ? groups.join('') : groups.join(state.value.separator);
-  status.value = 'Generated password';
+  return state.value.noSeparators ? groups.join('') : groups.join(state.value.separator);
+}
+
+function generatePassphrase() {
+  const words = Array.from({ length: state.value.wordCount }, () => choose(PASSPHRASE_WORDS));
+  return words.join(state.value.wordSeparator);
+}
+
+function generate(type, recordHistory = true) {
+  generatedType.value = type;
+  password.value = isPassphrase.value ? generatePassphrase() : generateCharacterPassword();
+  window.clearTimeout(copyFeedbackTimer);
+  copied.value = false;
+  status.value = isPassphrase.value ? 'Generated passphrase' : 'Generated password';
 
   if (recordHistory && !state.value.historyOnCopyOnly) {
     addHistoryEntry(password.value);
@@ -244,15 +261,16 @@ function buildPassword(recordHistory = true) {
 }
 
 async function copyPassword() {
-  if (!password.value) {
+  const value = password.value;
+  if (!value) {
     status.value = 'Nothing to copy';
     return;
   }
 
-  await navigator.clipboard.writeText(password.value);
-  showCopyFeedback();
+  await navigator.clipboard.writeText(value);
+  if (value === password.value) showCopyFeedback();
   if (state.value.historyOnCopyOnly) {
-    addHistoryEntry(password.value);
+    addHistoryEntry(value);
     status.value = 'Copied to clipboard and saved to history';
     return;
   }
@@ -287,6 +305,10 @@ function clearHistory() {
 
 function updateGroups(nextValue) {
   state.value.groups = Math.max(1, Math.min(12, nextValue));
+}
+
+function updateWordCount(nextValue) {
+  state.value.wordCount = Math.max(4, Math.min(12, nextValue));
 }
 
 function updateCharsPerGroup(nextValue) {
@@ -332,10 +354,8 @@ watch(() => state.value.enabledSymbols, (symbols) => {
 }, { deep: true });
 
 watch(state, () => {
-  buildPassword(false);
+  if (generatedType.value) generate(generatedType.value, false);
 }, { deep: true });
-
-buildPassword(false);
 
 onMounted(() => {
   window.addEventListener('keydown', handleTabAndEscapeFocus);
@@ -355,20 +375,23 @@ onBeforeUnmount(() => {
       <PasswordPanel
         :password="password"
         :history-count="history.length"
-        :length="renderedLength"
+        :word-count="isPassphrase ? state.wordCount : 0"
         :security-label="securityLabel"
         :copied="copied"
-        @generate="buildPassword()"
+        @generate="generate"
         @copy="copyPassword"
         @toggle-history="historyOpen = !historyOpen"
-        @toggle-about="aboutOpen = !aboutOpen"
-      />
+        @toggle-about="releaseNotesDialog.open()"
+      >
+        <UserGuideDialog title="Password Generator" :sections="userGuideSections" />
+      </PasswordPanel>
 
       <OptionsCard
         :state="state"
         :available-symbols="AVAILABLE_SYMBOLS"
-        :charset-size="combinedCharset.length"
-        :entropy-bits="entropyWholeBits"
+        :is-passphrase="isPassphrase"
+        :pool-size="isPassphrase ? PASSPHRASE_WORDS.length : combinedCharset.length"
+        :entropy-bits="password ? entropyWholeBits : null"
         :charset-info-open="charsetInfoOpen"
         :entropy-info-open="entropyInfoOpen"
         :symbol-settings-open="symbolSettingsOpen"
@@ -380,11 +403,12 @@ onBeforeUnmount(() => {
         @open-symbol-settings="symbolSettingsOpen = true"
         @update:state="state = $event"
         @update:groups="updateGroups"
+        @update:word-count="updateWordCount"
         @update:chars-per-group="updateCharsPerGroup"
         @update:copy-feedback-seconds="updateCopyFeedbackSeconds"
       />
 
-      <UserGuideDialog title="Password Generator" :sections="userGuideSections" />
+      <div id="password-generator-help"></div>
 
       <HistoryCard
         :open="historyOpen"
@@ -394,27 +418,19 @@ onBeforeUnmount(() => {
         @copy="copyHistoryValue"
       />
 
-      <section v-if="aboutOpen" class="info-overlay" @click.self="aboutOpen = false">
-        <div class="info-modal version-modal">
-          <div class="info-modal-header">
-            <span>About This Version</span>
-            <button class="info-modal-close" type="button" aria-label="Close version information" @click="aboutOpen = false">
-              <i class="bi bi-x-lg"></i>
-            </button>
-          </div>
-          <div class="info-panel version-info">
-            <p><strong>{{ isDesktopApp ? 'Desktop app' : 'Web app' }}</strong></p>
-            <p>The password generator, options, defaults, entropy calculation, secure randomness, history, symbol settings, and clipboard behavior are the same in both versions.</p>
-            <ul>
-              <li>The desktop edition uses a resizable native window that fits the available display. On macOS, it includes dedicated space for the window controls. It also includes a startup screen, installers, and operating-system packaging.</li>
-              <li>The web edition fills the browser viewport and adapts to the available screen size. On phones, its metrics stack vertically, content scrolls inside the visible app area, and spacing accounts for device safe areas.</li>
-              <li>The web edition follows browser clipboard permissions, while the desktop edition uses the native app environment.</li>
-              <li>Fonts can render slightly differently depending on the browser and operating system.</li>
-              <li>Password history is temporary by default. You can opt in to keeping it across refreshes and restarts in Options.</li>
-            </ul>
-          </div>
+      <ReleaseNotesDialog ref="releaseNotesDialog">
+        <div class="version-info">
+          <p><strong>{{ isDesktopApp ? 'Desktop app' : 'Web app' }}</strong></p>
+          <p>The password generator, options, defaults, entropy calculation, secure randomness, history, symbol settings, and clipboard behavior are the same in both versions.</p>
+          <ul>
+            <li>The desktop edition uses a resizable native window that fits the available display. On macOS, it includes dedicated space for the window controls. It also includes a startup screen, installers, and operating-system packaging.</li>
+            <li>The web edition fills the browser viewport and adapts to the available screen size. On phones, its metrics stack vertically, content scrolls inside the visible app area, and spacing accounts for device safe areas.</li>
+            <li>The web edition follows browser clipboard permissions, while the desktop edition uses the native app environment.</li>
+            <li>Fonts can render slightly differently depending on the browser and operating system.</li>
+            <li>Password history is temporary by default. You can opt in to keeping it across refreshes and restarts in Options.</li>
+          </ul>
         </div>
-      </section>
+      </ReleaseNotesDialog>
     </main>
   </div>
 </template>
