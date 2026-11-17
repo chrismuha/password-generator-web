@@ -11,16 +11,16 @@ const userGuideSections = [
   {
     "title": "Generate and copy",
     "lines": [
-      "Select Generate Password to show a result and reveal the password options. Adjust Groups and Characters Per Group to change the random-character count. Separators add characters between groups. Lowercase letters are always available.",
+      "Choose Password to reveal its settings. Adjust Groups and Characters Per Group to change the random-character count, then select Generate Password. Separators add characters between groups. Lowercase letters are always available.",
       "Uppercase, numbers, special characters, and exclusion of ambiguous characters are optional. Use Copy to Clipboard to place the current password on the clipboard; check the status if browser clipboard permission is denied."
     ]
   },
   {
     "title": "Generate a passphrase",
     "lines": [
-      "Select Generate Passphrase below Generate Password to create a phrase. The default is six words separated by hyphens.",
+      "Choose Passphrase, then select Generate Passphrase when you’re ready. The default is six words separated by hyphens.",
       "In passphrase mode, use Word count and Word separator in Options to adjust the phrase. Entropy is based on the number of randomly chosen words and the size of the word list.",
-      "Use Copy to Clipboard or open Password History to copy a saved phrase. Select Generate Password to return to character passwords."
+      "Use Copy to Clipboard or open Password History to copy a saved phrase. Choose Password to return to character passwords."
     ]
   },
   {
@@ -96,8 +96,8 @@ const state = ref({
 });
 
 const password = ref('');
-const generatedType = ref(null);
-const isPassphrase = computed(() => generatedType.value === 'passphrase');
+const selectedType = ref(null);
+const isPassphrase = computed(() => selectedType.value === 'passphrase');
 const status = ref('Ready');
 const copied = ref(false);
 let copyFeedbackTimer;
@@ -248,11 +248,19 @@ function generatePassphrase() {
   return words.join(state.value.wordSeparator);
 }
 
-function generate(type, recordHistory = true) {
-  generatedType.value = type;
+function selectType(type) {
+  if (selectedType.value === type) return;
+
+  selectedType.value = type;
+  password.value = '';
+  clearCopyFeedback();
+}
+
+function generate(recordHistory = true) {
+  if (!selectedType.value) return;
+
   password.value = isPassphrase.value ? generatePassphrase() : generateCharacterPassword();
-  window.clearTimeout(copyFeedbackTimer);
-  copied.value = false;
+  clearCopyFeedback();
   status.value = isPassphrase.value ? 'Generated passphrase' : 'Generated password';
 
   if (recordHistory && !state.value.historyOnCopyOnly) {
@@ -284,13 +292,14 @@ async function copyHistoryValue(value) {
   status.value = 'Copied history item to clipboard';
 }
 
-function showCopyFeedback() {
+function clearCopyFeedback() {
   window.clearTimeout(copyFeedbackTimer);
+  copied.value = false;
+}
 
-  if (!state.value.copyFeedbackEnabled) {
-    copied.value = false;
-    return;
-  }
+function showCopyFeedback() {
+  clearCopyFeedback();
+  if (!state.value.copyFeedbackEnabled) return;
 
   copied.value = true;
   copyFeedbackTimer = window.setTimeout(() => {
@@ -320,7 +329,7 @@ function updateCopyFeedbackSeconds(nextValue) {
 }
 
 watch(() => state.value.copyFeedbackEnabled, (isEnabled) => {
-  if (!isEnabled) showCopyFeedback();
+  if (!isEnabled) clearCopyFeedback();
 });
 
 watch(() => state.value.persistHistory, (isEnabled) => {
@@ -354,7 +363,7 @@ watch(() => state.value.enabledSymbols, (symbols) => {
 }, { deep: true });
 
 watch(state, () => {
-  if (generatedType.value) generate(generatedType.value, false);
+  if (password.value) generate(false);
 }, { deep: true });
 
 onMounted(() => {
@@ -374,11 +383,13 @@ onBeforeUnmount(() => {
     <main class="app-frame">
       <PasswordPanel
         :password="password"
+        :selected-type="selectedType"
         :history-count="history.length"
         :word-count="isPassphrase ? state.wordCount : 0"
         :security-label="securityLabel"
         :copied="copied"
-        @generate="generate"
+        @select-type="selectType"
+        @generate="generate()"
         @copy="copyPassword"
         @toggle-history="historyOpen = !historyOpen"
         @toggle-about="releaseNotesDialog.open()"
@@ -387,7 +398,7 @@ onBeforeUnmount(() => {
       </PasswordPanel>
 
       <OptionsCard
-        v-if="generatedType"
+        v-if="selectedType"
         :state="state"
         :available-symbols="AVAILABLE_SYMBOLS"
         :is-passphrase="isPassphrase"

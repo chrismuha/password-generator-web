@@ -5,7 +5,7 @@
   "usageTips": [
     {
       "title": "Generate a passphrase",
-      "description": "Select Generate Password or Generate Passphrase to reveal its settings and the Copy to Clipboard button. For a passphrase, adjust the word count or separator in Options."
+      "description": "Choose Password or Passphrase to reveal its settings and Generate button. Adjust the settings before you generate. Copy to Clipboard appears once a result is ready."
     },
     {
       "title": "User guide and release notes",

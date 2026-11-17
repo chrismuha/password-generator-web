@@ -9,6 +9,10 @@ defineProps({
     type: String,
     required: true
   },
+  selectedType: {
+    type: [String, null],
+    required: true
+  },
   historyCount: {
     type: Number,
     required: true
@@ -27,7 +31,7 @@ defineProps({
   }
 });
 
-defineEmits(['generate', 'copy', 'toggle-history', 'toggle-about']);
+defineEmits(['select-type', 'generate', 'copy', 'toggle-history', 'toggle-about']);
 </script>
 
 <template>
@@ -51,8 +55,22 @@ defineEmits(['generate', 'copy', 'toggle-history', 'toggle-about']);
       <slot />
     </div>
 
-    <div class="result-card">
-      <div class="result-value" :class="`align-${passwordAlignment}`">{{ password }}</div>
+    <fieldset class="generator-picker">
+      <legend>What are you generating today?</legend>
+      <div class="generator-choices">
+        <label>
+          <input type="radio" name="generator-type" :checked="selectedType === 'password'" @change="$emit('select-type', 'password')">
+          Password
+        </label>
+        <label>
+          <input type="radio" name="generator-type" :checked="selectedType === 'passphrase'" @change="$emit('select-type', 'passphrase')">
+          Passphrase
+        </label>
+      </div>
+    </fieldset>
+
+    <div v-if="selectedType" class="result-card">
+      <div v-if="password" class="result-value" :class="`align-${passwordAlignment}`">{{ password }}</div>
       <div v-if="password" class="result-details">
         <div class="alignment-toggle" aria-label="Password alignment">
           <button type="button" aria-label="Align password left" :aria-pressed="passwordAlignment === 'left'" @click="passwordAlignment = 'left'">
@@ -64,8 +82,9 @@ defineEmits(['generate', 'copy', 'toggle-history', 'toggle-about']);
         </div>
         <div class="result-meta">{{ wordCount ? `${wordCount} words · ` : '' }}{{ password.length }} characters · {{ securityLabel }}</div>
       </div>
-      <button class="result-action" type="button" @click="$emit('generate', 'password')">Generate Password</button>
-      <button class="result-action" type="button" @click="$emit('generate', 'passphrase')">Generate Passphrase</button>
+      <button class="result-action" type="button" @click="$emit('generate')">
+        {{ selectedType === 'passphrase' ? 'Generate Passphrase' : 'Generate Password' }}
+      </button>
       <button
         v-if="password"
         class="result-action copy-action"

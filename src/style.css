@@ -134,6 +134,54 @@ button {
   font-weight: 700;
 }
 
+.generator-picker {
+  min-width: 0;
+  margin: 12px 0 8px;
+  padding: 0;
+  border: 0;
+}
+
+.generator-picker legend {
+  margin-bottom: 8px;
+  padding: 0;
+  font-size: 0.98rem;
+  font-weight: 600;
+}
+
+.generator-choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.generator-choices label {
+  flex: 1 1 110px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid #727275;
+  border-radius: 10px;
+  background: #383838;
+  cursor: pointer;
+}
+
+.generator-choices label:has(input:checked) {
+  border-color: #a9cfff;
+  background: #203753;
+}
+
+.generator-choices label:has(input:focus-visible) {
+  outline: 2px solid #a9cfff;
+  outline-offset: 2px;
+}
+
+.generator-choices input {
+  margin: 0;
+  accent-color: #a9cfff;
+}
+
 .result-card,
 .list-card,
 .history-header,
@@ -221,6 +269,10 @@ button {
   color: #ff3b30;
   font-size: 1rem;
   cursor: pointer;
+}
+
+.result-action:first-child {
+  border-top: 0;
 }
 
 .copy-action {
