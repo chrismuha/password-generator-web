@@ -279,6 +279,11 @@ button {
   transition: color 160ms ease, font-size 160ms ease, font-weight 160ms ease;
 }
 
+.copy-action:disabled {
+  color: #b3b3b5;
+  cursor: default;
+}
+
 .result-action.copy-action.is-copied {
   color: #30d158;
   font-size: 1.35rem;

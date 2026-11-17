@@ -12,7 +12,7 @@ const userGuideSections = [
     "title": "Generate and copy",
     "lines": [
       "Choose Password to reveal its settings. Adjust Groups and Characters Per Group to change the random-character count, then select Generate Password. Separators add characters between groups. Lowercase letters are always available.",
-      "Uppercase, numbers, special characters, and exclusion of ambiguous characters are optional. Use Copy to Clipboard to place the current password on the clipboard; check the status if browser clipboard permission is denied."
+      "Uppercase, numbers, special characters, and exclusion of ambiguous characters are optional. Copy to Clipboard is available after you generate a password; check the status if browser clipboard permission is denied."
     ]
   },
   {
@@ -387,7 +387,7 @@ onBeforeUnmount(() => {
         :history-count="history.length"
         :word-count="isPassphrase ? state.wordCount : 0"
         :security-label="securityLabel"
-        :copied="copied"
+        :copied="Boolean(password) && copied"
         @select-type="selectType"
         @generate="generate()"
         @copy="copyPassword"
