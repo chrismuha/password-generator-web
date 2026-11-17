@@ -213,6 +213,7 @@ button {
 }
 
 .result-action {
+  display: block;
   width: 100%;
   padding: 11px 16px;
   background: transparent;
@@ -280,11 +281,6 @@ button {
 
 .info-panel a {
   color: #a9cfff;
-}
-
-.copy-action:disabled {
-  opacity: 0.55;
-  cursor: default;
 }
 
 .option-label,

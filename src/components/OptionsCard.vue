@@ -25,7 +25,7 @@ const props = defineProps({
     required: true
   },
   entropyBits: {
-    type: [Number, null],
+    type: Number,
     required: true
   },
   entropyInfoOpen: {
@@ -226,7 +226,7 @@ function cycleSeparator() {
             <i class="bi bi-info-circle"></i>
           </button>
         </span>
-        <strong>{{ entropyBits === null ? '—' : `${entropyBits} bits` }}</strong>
+        <strong>{{ entropyBits }} bits</strong>
       </div>
     </div>
 

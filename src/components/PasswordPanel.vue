@@ -67,10 +67,10 @@ defineEmits(['generate', 'copy', 'toggle-history', 'toggle-about']);
       <button class="result-action" type="button" @click="$emit('generate', 'password')">Generate Password</button>
       <button class="result-action" type="button" @click="$emit('generate', 'passphrase')">Generate Passphrase</button>
       <button
+        v-if="password"
         class="result-action copy-action"
         :class="{ 'is-copied': copied }"
         type="button"
-        :disabled="!password"
         @click="$emit('copy')"
       >{{ copied ? 'Copied' : 'Copy to Clipboard' }}</button>
     </div>

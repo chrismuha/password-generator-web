@@ -5,6 +5,7 @@
 ### Generation
 
 - Added a Generate Passphrase button below Generate Password, with adjustable word count and separators.
+- Shows only the selected generator’s options and reveals Copy to Clipboard once a result appears.
 - Waits for Generate Password or Generate Passphrase before showing the first result.
 
 ### Help and support

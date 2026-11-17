@@ -11,8 +11,8 @@ const userGuideSections = [
   {
     "title": "Generate and copy",
     "lines": [
-      "Choose Groups and Characters Per Group, then Generate Password. The random-character count is their product; separators add displayed characters between groups. Lowercase letters are always available.",
-      "Uppercase, numbers, special characters, and exclusion of ambiguous characters are optional. Use Copy to place the current password on the clipboard; check the status if browser clipboard permission is denied."
+      "Select Generate Password to show a result and reveal the password options. Adjust Groups and Characters Per Group to change the random-character count. Separators add characters between groups. Lowercase letters are always available.",
+      "Uppercase, numbers, special characters, and exclusion of ambiguous characters are optional. Use Copy to Clipboard to place the current password on the clipboard; check the status if browser clipboard permission is denied."
     ]
   },
   {
@@ -387,11 +387,12 @@ onBeforeUnmount(() => {
       </PasswordPanel>
 
       <OptionsCard
+        v-if="generatedType"
         :state="state"
         :available-symbols="AVAILABLE_SYMBOLS"
         :is-passphrase="isPassphrase"
         :pool-size="isPassphrase ? PASSPHRASE_WORDS.length : combinedCharset.length"
-        :entropy-bits="password ? entropyWholeBits : null"
+        :entropy-bits="entropyWholeBits"
         :charset-info-open="charsetInfoOpen"
         :entropy-info-open="entropyInfoOpen"
         :symbol-settings-open="symbolSettingsOpen"

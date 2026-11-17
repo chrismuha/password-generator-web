@@ -2,7 +2,7 @@
 
 ## Generate and copy
 
-Choose Groups and Characters Per Group, then Generate Password. The random-character count is their product; separators add displayed characters between groups. Lowercase letters are always available. Uppercase, numbers, special characters, and exclusion of ambiguous characters are optional. Use Copy to place the current password on the clipboard; check the status if browser clipboard permission is denied.
+Select **Generate Password** to show a result and reveal the password options. Adjust **Groups** and **Characters Per Group** to change the random-character count. Separators add characters between groups. Lowercase letters are always available. Uppercase, numbers, special characters, and exclusion of ambiguous characters are optional. Once a result appears, use **Copy to Clipboard** to place the current password on the clipboard; check the status if browser clipboard permission is denied.
 
 ## Generate a passphrase
 
