@@ -10,6 +10,8 @@ Choose **Passphrase** under **What are you generating today?**. Select **Generat
 
 The word list is adapted from the Electronic Frontier Foundation’s long word list, with four hyphenated entries omitted so a hyphen always marks a word boundary. [EFF word list](https://www.eff.org/deeplinks/2016/07/new-wordlists-random-passphrases) · [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
 
+Select **Reset** beside **User Guide** to restore the default options, clear the displayed result, and deselect Password or Passphrase. Recent history stays available for this session, and **Keep history after refresh** returns to off.
+
 ## Symbols and separators
 
 Open Special Characters in Options to include or exclude individual symbols, Select All, or Select None. Turning special characters off excludes that pool. Separator choices are Dot, hyphen, Space, and None; None is the default. After you generate your first result, changing options regenerates the displayed result. Charset shows the available character count; entropy and its labels are estimates from length and charset, not a guarantee about an account or service.

@@ -12,7 +12,8 @@ const userGuideSections = [
     "title": "Generate and copy",
     "lines": [
       "Choose Password to reveal its settings. Adjust Groups and Characters Per Group to change the random-character count, then select Generate Password. Separators add characters between groups. Lowercase letters are always available.",
-      "Uppercase, numbers, special characters, and exclusion of ambiguous characters are optional. Copy to Clipboard is available after you generate a password; check the status if browser clipboard permission is denied."
+      "Uppercase, numbers, special characters, and exclusion of ambiguous characters are optional. Copy to Clipboard is available after you generate a password; check the status if browser clipboard permission is denied.",
+      "Select Reset beside User Guide to restore the default options, clear the displayed result, and deselect Password or Passphrase. Recent history stays available for this session, and Keep history after refresh returns to off."
     ]
   },
   {
@@ -78,7 +79,7 @@ function loadPersistedHistory() {
   }
 }
 
-const state = ref({
+const DEFAULT_OPTIONS = {
   groups: 4,
   wordCount: 6,
   wordSeparator: '-',
@@ -88,13 +89,15 @@ const state = ref({
   includeSymbols: true,
   excludeAmbiguous: true,
   historyOnCopyOnly: true,
-  persistHistory: shouldPersistHistory(),
+  persistHistory: false,
   copyFeedbackEnabled: true,
   copyFeedbackSeconds: 5,
   noSeparators: true,
   separator: '',
   enabledSymbols: AVAILABLE_SYMBOLS
-});
+};
+
+const state = ref({ ...DEFAULT_OPTIONS, persistHistory: shouldPersistHistory() });
 
 const password = ref('');
 const selectedType = ref(null);
@@ -250,11 +253,18 @@ function generatePassphrase() {
 }
 
 function selectType(type) {
-  if (selectedType.value === type) return;
-
   selectedType.value = type;
   password.value = '';
   clearCopyFeedback();
+}
+
+function resetGenerator() {
+  selectType(null);
+  state.value = { ...DEFAULT_OPTIONS };
+  entropyInfoOpen.value = false;
+  charsetInfoOpen.value = false;
+  symbolSettingsOpen.value = false;
+  status.value = 'Ready';
 }
 
 function generate(recordHistory = true) {
@@ -350,7 +360,7 @@ watch(history, (entries) => {
 }, { deep: true });
 
 watch(() => state.value.noSeparators, (isDisabled) => {
-  if (isDisabled) {
+  if (isDisabled && selectedType.value) {
     status.value = 'Separators disabled';
   }
 });
@@ -390,6 +400,7 @@ onBeforeUnmount(() => {
         :security-label="securityLabel"
         :copied="Boolean(password) && copied"
         @select-type="selectType"
+        @reset="resetGenerator"
         @generate="generate()"
         @copy="copyPassword"
         @toggle-history="historyOpen = !historyOpen"

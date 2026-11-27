@@ -50,7 +50,13 @@ onMounted(() => wideLayoutQuery.addEventListener('change', updateLayout));
 onBeforeUnmount(() => wideLayoutQuery.removeEventListener('change', updateLayout));
 const resultType = computed(() => props.selectedType === 'passphrase' ? 'passphrase' : 'password');
 
-defineEmits(['select-type', 'generate', 'copy', 'toggle-history', 'toggle-about']);
+const emit = defineEmits(['select-type', 'reset', 'generate', 'copy', 'toggle-history', 'toggle-about']);
+
+function resetGenerator() {
+  wideAlignment.value = 'left';
+  compactAlignment.value = 'center';
+  emit('reset');
+}
 </script>
 
 <template>
@@ -71,7 +77,13 @@ defineEmits(['select-type', 'generate', 'copy', 'toggle-history', 'toggle-about'
           </button>
         </div>
       </div>
-      <slot />
+      <div class="hero-actions">
+        <slot />
+        <button class="mcr-guide-launch reset-button" type="button" @click="resetGenerator">
+          <i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i>
+          <span>Reset</span>
+        </button>
+      </div>
     </div>
 
     <fieldset class="generator-picker">
@@ -126,3 +138,33 @@ defineEmits(['select-type', 'generate', 'copy', 'toggle-history', 'toggle-about'
     </div>
   </section>
 </template>
+
+<style scoped>
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.mcr-guide-launch.reset-button {
+  --guide-surface: #3a2d10;
+  --guide-border: #9f7826;
+  --guide-text: #ffdc78;
+  align-self: stretch;
+  -webkit-app-region: no-drag;
+}
+
+.mcr-guide-launch.reset-button:hover {
+  background: #4a3915;
+  border-color: #ffdc78;
+}
+
+.mcr-guide-launch.reset-button:focus-visible {
+  outline-color: #ffdc78;
+}
+
+.reset-button .bi {
+  font-size: 1.2rem;
+  line-height: 1;
+}
+</style>

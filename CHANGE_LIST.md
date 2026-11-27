@@ -9,6 +9,7 @@
 ### Generation
 
 - Added a prompt to choose Password or Passphrase before showing its Generate button.
+- Added a yellow Reset button beside User Guide that restores default options, clears the current result, and deselects Password or Passphrase.
 - Added passphrase generation with adjustable word count and separators.
 - Shows the selected generator’s options and Copy to Clipboard before generation. Copy to Clipboard becomes available once a result appears.
 - Waits for Generate Password or Generate Passphrase before showing a result, including after switching types.
