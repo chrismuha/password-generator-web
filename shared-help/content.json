@@ -8,6 +8,10 @@
       "description": "Choose Password or Passphrase to reveal its settings and Generate button. Adjust the settings before you generate. Copy to Clipboard is visible for either choice and becomes available after you generate a result."
     },
     {
+      "title": "Read and select results on larger screens",
+      "description": "In the desktop layout, long results wrap inside the result field. Use Tab to focus it, then Ctrl+A on Windows or Command+A on macOS to select the entire result."
+    },
+    {
       "title": "User guide and release notes",
       "description": "Keep using this app\u2019s existing guide and release notes for feature instructions and version history."
     }

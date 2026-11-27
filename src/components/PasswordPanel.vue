@@ -1,10 +1,8 @@
 <script setup>
-import { ref } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import appIcon from '../assets/icon.svg';
 
-const passwordAlignment = ref('center');
-
-defineProps({
+const props = defineProps({
   password: {
     type: String,
     required: true
@@ -30,6 +28,27 @@ defineProps({
     default: false
   }
 });
+
+// Match the compact layout breakpoint in style.css.
+const wideLayoutQuery = window.matchMedia('(width > 900px)');
+const isWideLayout = ref(wideLayoutQuery.matches);
+const wideAlignment = ref('left');
+const compactAlignment = ref('center');
+const passwordAlignment = computed({
+  get: () => (isWideLayout.value ? wideAlignment : compactAlignment).value,
+  set: (alignment) => {
+    const activeAlignment = isWideLayout.value ? wideAlignment : compactAlignment;
+    activeAlignment.value = alignment;
+  }
+});
+
+function updateLayout(event) {
+  isWideLayout.value = event.matches;
+}
+
+onMounted(() => wideLayoutQuery.addEventListener('change', updateLayout));
+onBeforeUnmount(() => wideLayoutQuery.removeEventListener('change', updateLayout));
+const resultType = computed(() => props.selectedType === 'passphrase' ? 'passphrase' : 'password');
 
 defineEmits(['select-type', 'generate', 'copy', 'toggle-history', 'toggle-about']);
 </script>
@@ -69,14 +88,26 @@ defineEmits(['select-type', 'generate', 'copy', 'toggle-history', 'toggle-about'
       </div>
     </fieldset>
 
-    <div v-if="selectedType" class="result-card">
-      <div v-if="password" class="result-value" :class="`align-${passwordAlignment}`">{{ password }}</div>
+    <div v-if="selectedType" class="result-card" :class="{ 'result-card-wide': isWideLayout }">
+      <div v-if="password && isWideLayout" class="readable-result">
+        <label for="generated-result">Generated {{ resultType }}</label>
+        <textarea
+          id="generated-result"
+          class="result-value readable-result-value"
+          :class="[`align-${passwordAlignment}`, `result-${resultType}`]"
+          :value="password"
+          rows="3"
+          readonly
+          spellcheck="false"
+        ></textarea>
+      </div>
+      <div v-else-if="password" class="result-value" :class="`align-${passwordAlignment}`">{{ password }}</div>
       <div v-if="password" class="result-details">
-        <div class="alignment-toggle" aria-label="Password alignment">
-          <button type="button" aria-label="Align password left" :aria-pressed="passwordAlignment === 'left'" @click="passwordAlignment = 'left'">
+        <div class="alignment-toggle" :role="isWideLayout ? 'group' : undefined" :aria-label="isWideLayout ? 'Result alignment' : 'Password alignment'">
+          <button type="button" :aria-label="`Align ${isWideLayout ? resultType : 'password'} left`" :aria-pressed="passwordAlignment === 'left'" @click="passwordAlignment = 'left'">
             <i class="bi bi-text-left"></i>
           </button>
-          <button type="button" aria-label="Center password" :aria-pressed="passwordAlignment === 'center'" @click="passwordAlignment = 'center'">
+          <button type="button" :aria-label="`Center ${isWideLayout ? resultType : 'password'}`" :aria-pressed="passwordAlignment === 'center'" @click="passwordAlignment = 'center'">
             <i class="bi bi-text-center"></i>
           </button>
         </div>

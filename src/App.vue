@@ -41,6 +41,7 @@ const userGuideSections = [
     "title": "Feedback, keyboard, and editions",
     "lines": [
       "Copy feedback can be enabled and its duration adjusted from 1 to 30 seconds. Tab and Shift+Tab move between controls and wrap at the ends; Escape removes the current input focus. Desktop and web use the same generator.",
+      "In the desktop layout, focus the generated result with Tab and use Ctrl+A (Windows) or Command+A (macOS) to select the entire result. Long results wrap inside the field. Use the alignment buttons to left-align or center the text.",
       "The browser edition depends on browser clipboard permissions and stores any persisted history for that website and browser profile. Desktop storage belongs to its app profile. They do not synchronize history across devices."
     ]
   }

@@ -2,6 +2,10 @@
 
 ## 0.1.0 — TBD
 
+### Accessibility
+
+- Redesigned password and passphrase results on desktop-sized screens with high-contrast text, wrapping for long values, and keyboard selection.
+
 ### Generation
 
 - Added a prompt to choose Password or Passphrase before showing its Generate button.

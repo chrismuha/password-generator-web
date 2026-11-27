@@ -22,6 +22,8 @@ History keeps at most ten entries. By default only copied passwords enter histor
 
 Copy feedback can be enabled and its duration adjusted from 1 to 30 seconds. Tab and Shift+Tab move between controls and wrap at the ends; Escape removes the current input focus. Desktop and web use the same generator. The browser edition depends on browser clipboard permissions and stores any persisted history for that website and browser profile. Desktop storage belongs to its app profile. They do not synchronize history across devices.
 
+In the desktop layout, long passwords and passphrases wrap inside the result field. Focus the field with Tab and press **Ctrl+A** on Windows or **Command+A** on macOS to select the entire result. The alignment buttons below the field switch between left and centered text.
+
 ## Foldable preview profiles
 
 In the development preview, choose a named device from Device:

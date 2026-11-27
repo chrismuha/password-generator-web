@@ -747,6 +747,84 @@ button {
   font-size: 0.82rem;
 }
 
+.readable-result {
+  padding: 14px 14px 10px;
+}
+
+.readable-result label {
+  display: block;
+  margin-bottom: 6px;
+  color: #f3f3f3;
+  font-weight: 600;
+}
+
+.result-card-wide .readable-result-value {
+  display: block;
+  field-sizing: content;
+  width: 100%;
+  min-height: 0;
+  border: 1px solid #727275;
+  border-radius: 9px;
+  padding: 12px 14px;
+  background: #141414;
+  color: #f3f3f3;
+  font: 400 1.375rem / 1.55 "SF Mono", Menlo, Consolas, monospace;
+  font-variant-ligatures: none;
+  letter-spacing: 0.04em;
+  white-space: pre-wrap;
+  word-break: normal;
+  overflow-wrap: anywhere;
+  resize: none;
+}
+
+@supports not (field-sizing: content) {
+  .result-card-wide .readable-result-value {
+    resize: vertical;
+  }
+}
+
+.result-card-wide .readable-result-value.result-passphrase {
+  font-family: system-ui, sans-serif;
+  letter-spacing: 0.025em;
+}
+
+.result-card-wide .result-meta {
+  font-size: 0.875rem;
+  letter-spacing: normal;
+}
+
+.result-card-wide .result-details {
+  flex-wrap: wrap;
+  padding: 0 14px 10px;
+}
+
+.result-card-wide .alignment-toggle button {
+  width: 36px;
+  height: 34px;
+  color: #ededee;
+}
+
+.result-card-wide .result-action {
+  min-height: 44px;
+  padding: 8px 14px;
+  color: #a9cfff;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.result-card-wide .result-action:disabled {
+  color: #b3b3b5;
+}
+
+.result-card-wide .result-action:hover:not(:disabled) {
+  background: #414143;
+}
+
+.result-card-wide :focus-visible {
+  outline: 2px solid #a9cfff;
+  outline-offset: -3px;
+}
+
 @media (max-width: 900px) {
   html,
   body,
