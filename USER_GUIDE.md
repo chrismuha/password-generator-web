@@ -2,11 +2,11 @@
 
 ## Generate and copy
 
-Choose **Password** under **What are you generating today?** to reveal the password settings. Adjust **Groups** and **Characters Per Group** to change the random-character count, then select **Generate Password**. Separators add characters between groups. Lowercase letters are always available. Uppercase, numbers, special characters, and exclusion of ambiguous characters are optional. Once a result appears, use **Copy to Clipboard** to place the current password on the clipboard; check the status if browser clipboard permission is denied.
+Select the **Password** card under **What are you generating today?** to reveal the password settings. Adjust **Groups** and **Characters Per Group** to change the random-character count, then select the red **Generate Password** button. Separators add characters between groups. Lowercase letters are always available. Uppercase, numbers, special characters, and exclusion of ambiguous characters are optional. Once a result appears, use **Copy to Clipboard** to place the current password on the clipboard; check the status if browser clipboard permission is denied.
 
 ## Generate a passphrase
 
-Choose **Passphrase** under **What are you generating today?**. Select **Generate Passphrase** when you’re ready. The default is six random words joined by hyphens. Use **Word count** to choose 4 to 12 words and **Word separator** to choose Hyphen, Space, or Dot. Entropy is based on the size of the word list and how many words were chosen. Both formats show **Copy to Clipboard** once selected. The button becomes available when a result is ready, and copied results can be saved to history. Choose **Password** to return to the character password options. Switching types clears the displayed result.
+Select the **Passphrase** card under **What are you generating today?**. Select the red **Generate Passphrase** button when you’re ready. The default is six random words joined by hyphens. Use **Word count** to choose 4 to 12 words and **Word separator** to choose Hyphen, Space, or Dot. Entropy is based on the size of the word list and how many words were chosen. Both formats show **Copy to Clipboard** once selected. The button becomes available when a result is ready, and copied results can be saved to history. Choose **Password** to return to the character password options. Switching types clears the displayed result.
 
 The word list is adapted from the Electronic Frontier Foundation’s long word list, with four hyphenated entries omitted so a hyphen always marks a word boundary. [EFF word list](https://www.eff.org/deeplinks/2016/07/new-wordlists-random-passphrases) · [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
 

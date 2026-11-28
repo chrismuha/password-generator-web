@@ -37,7 +37,7 @@ defineExpose({ open: () => dialog.value.showModal() });
     <dialog ref="dialog" class="release-notes" aria-labelledby="release-notes-title">
       <header class="release-notes-header">
         <h2 id="release-notes-title">What’s New in {{ currentVersion }}</h2>
-        <p>Reset your generator options in one click, generate a password or passphrase on demand, and read or select results in the redesigned field on desktop-sized screens.</p>
+        <p>Choose a generator card and use the red Generate button on desktop or mobile. Reset restores the default options in one click.</p>
       </header>
       <div class="release-notes-content">
         <template v-for="(version, index) in versions" :key="version.title">

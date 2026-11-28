@@ -91,11 +91,15 @@ function resetGenerator() {
       <div class="generator-choices">
         <label>
           <input type="radio" name="generator-type" :checked="selectedType === 'password'" @change="$emit('select-type', 'password')">
-          Password
+          <i class="bi bi-key-fill generator-choice-icon" aria-hidden="true"></i>
+          <span>Password</span>
+          <span class="generator-choice-indicator" aria-hidden="true"><i class="bi bi-check-lg"></i></span>
         </label>
         <label>
           <input type="radio" name="generator-type" :checked="selectedType === 'passphrase'" @change="$emit('select-type', 'passphrase')">
-          Passphrase
+          <i class="bi bi-lock-fill generator-choice-icon" aria-hidden="true"></i>
+          <span>Passphrase</span>
+          <span class="generator-choice-indicator" aria-hidden="true"><i class="bi bi-check-lg"></i></span>
         </label>
       </div>
     </fieldset>
@@ -125,7 +129,7 @@ function resetGenerator() {
         </div>
         <div class="result-meta">{{ wordCount ? `${wordCount} words · ` : '' }}{{ password.length }} characters · {{ securityLabel }}</div>
       </div>
-      <button class="result-action" type="button" @click="$emit('generate')">
+      <button class="generate-action" type="button" @click="$emit('generate')">
         {{ selectedType === 'passphrase' ? 'Generate Passphrase' : 'Generate Password' }}
       </button>
       <button
@@ -140,6 +144,120 @@ function resetGenerator() {
 </template>
 
 <style scoped>
+.generator-choices {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr));
+  gap: 8px;
+}
+
+.generator-choices label {
+  position: relative;
+  display: flex;
+  overflow-wrap: anywhere;
+  align-items: center;
+  gap: 10px;
+  min-height: 52px;
+  padding: 8px 12px;
+  border: 1px solid #657083;
+  border-radius: 12px;
+  background: #242932;
+  color: #dbe1e9;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.generator-choices label:has(input:checked) {
+  border-color: #72869d;
+  background: #293545;
+}
+
+.generator-choices label:has(input:focus-visible) {
+  outline: 2px solid #a1b4ca;
+  outline-offset: 2px;
+}
+
+.generator-choices input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  opacity: 0;
+}
+
+.generator-choice-icon,
+.generator-choice-indicator {
+  display: grid;
+  flex: none;
+  place-items: center;
+  line-height: 1;
+}
+
+.generator-choice-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: #1d222b;
+  color: #fff;
+  font-size: 1.125rem;
+}
+
+.generator-choice-indicator {
+  width: 20px;
+  height: 20px;
+  margin-left: auto;
+  border: 1px solid #818c9e;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.generator-choice-indicator i {
+  visibility: hidden;
+}
+
+input:checked ~ .generator-choice-indicator {
+  border-color: #fff;
+  background: #fff;
+  color: #000;
+}
+
+input:checked ~ .generator-choice-indicator i {
+  visibility: visible;
+}
+
+.generate-action {
+  display: block;
+  width: calc(100% - 24px);
+  min-height: 44px;
+  margin: 12px;
+  padding: 10px 14px;
+  border: 1px solid #ed5961;
+  border-radius: 10px;
+  background: #b8212e;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.generate-action:active {
+  background: #981b26;
+}
+
+.generate-action:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+@media (forced-colors: active) {
+  .generator-choices label:has(input:checked),
+  input:checked ~ .generator-choice-indicator {
+    border-color: Highlight;
+  }
+
+  .generate-action {
+    border-color: ButtonText;
+  }
+}
+
 .hero-actions {
   display: flex;
   flex-wrap: wrap;
@@ -152,11 +270,6 @@ function resetGenerator() {
   --guide-text: #ffdc78;
   align-self: stretch;
   -webkit-app-region: no-drag;
-}
-
-.mcr-guide-launch.reset-button:hover {
-  background: #4a3915;
-  border-color: #ffdc78;
 }
 
 .mcr-guide-launch.reset-button:focus-visible {

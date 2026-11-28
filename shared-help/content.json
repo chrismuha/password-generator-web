@@ -5,7 +5,7 @@
   "usageTips": [
     {
       "title": "Generate a passphrase",
-      "description": "Choose Password or Passphrase to reveal its settings and Generate button. Adjust the settings before you generate. Copy to Clipboard is visible for either choice and becomes available after you generate a result."
+      "description": "Select the Password or Passphrase card to reveal its settings and red Generate button. Adjust the settings before you generate. Copy to Clipboard is visible for either choice and becomes available after you generate a result."
     },
     {
       "title": "Read and select results on larger screens",

@@ -4,14 +4,21 @@
 
 ### Accessibility
 
+- Keeps the heading and controls clear of phone display cutouts.
+- Keeps the Password and Passphrase boxes the same width when switching modes.
+- Keeps the Password Generator heading on one line on narrow screens.
 - Redesigned password and passphrase results on desktop-sized screens with high-contrast text, wrapping for long values, and keyboard selection.
+- Removed hover color changes from the generator, User Guide, and Help.
+- Uses a muted navy selection color with soft text and a white checkbox with a black checkmark.
 
 ### Generation
 
 - Added a prompt to choose Password or Passphrase before showing its Generate button.
 - Added a yellow Reset button beside User Guide that restores default options, clears the current result, and deselects Password or Passphrase.
 - Added passphrase generation with adjustable word count and separators.
+- Redesigned the selector cards with a solid white key for Password, a solid white rounded padlock for Passphrase, and a checkmark for the selected mode.
 - Shows the selected generator’s options and Copy to Clipboard before generation. Copy to Clipboard becomes available once a result appears.
+- Uses matching red Generate buttons on desktop and mobile.
 - Waits for Generate Password or Generate Passphrase before showing a result, including after switching types.
 
 ### Help and support

@@ -11,7 +11,7 @@ const userGuideSections = [
   {
     "title": "Generate and copy",
     "lines": [
-      "Choose Password to reveal its settings. Adjust Groups and Characters Per Group to change the random-character count, then select Generate Password. Separators add characters between groups. Lowercase letters are always available.",
+      "Select the Password card to reveal its settings. Adjust Groups and Characters Per Group to change the random-character count, then select the red Generate Password button. Separators add characters between groups. Lowercase letters are always available.",
       "Uppercase, numbers, special characters, and exclusion of ambiguous characters are optional. Copy to Clipboard is available after you generate a password; check the status if browser clipboard permission is denied.",
       "Select Reset beside User Guide to restore the default options, clear the displayed result, and deselect Password or Passphrase. Recent history stays available for this session, and Keep history after refresh returns to off."
     ]
@@ -19,7 +19,7 @@ const userGuideSections = [
   {
     "title": "Generate a passphrase",
     "lines": [
-      "Choose Passphrase, then select Generate Passphrase when you’re ready. The default is six words separated by hyphens.",
+      "Select the Passphrase card, then select the red Generate Passphrase button when you’re ready. The default is six words separated by hyphens.",
       "In passphrase mode, use Word count and Word separator in Options to adjust the phrase. Entropy is based on the number of randomly chosen words and the size of the word list.",
       "Use Copy to Clipboard or open Password History to copy a saved phrase. Choose Password to return to character passwords."
     ]
